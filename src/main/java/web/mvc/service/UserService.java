@@ -2,9 +2,9 @@ package web.mvc.service;
 
 import web.mvc.domain.User;
 
-public interface UserService {
+public interface UserService{
 	/**
 	 * �로그인하기
 	 * */
-   User loginCheck(User user);
+   User loginCheck(User user) throws Exception;
 }
