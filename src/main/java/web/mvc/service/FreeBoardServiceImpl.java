@@ -34,7 +34,17 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     @Override
     public FreeBoard selectBy(Long bno, boolean state) {
         Optional<FreeBoard> optionalBoard = boardRepository.findById(bno);
-        return optionalBoard.orElse(null);
+        if(optionalBoard.isPresent())
+        {
+            FreeBoard freeBoard = optionalBoard.get();
+            if(state)
+            {
+                freeBoard.setReadnum(freeBoard.getReadnum() + 1);
+                boardRepository.save(freeBoard);
+            }
+            return freeBoard;
+        }
+        return null;
     }
 
     @Override
