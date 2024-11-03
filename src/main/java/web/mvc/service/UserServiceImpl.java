@@ -3,6 +3,8 @@ package web.mvc.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import web.mvc.domain.User;
+import web.mvc.exception.BasicException;
+import web.mvc.exception.ErrorCode;
 import web.mvc.repository.UserRepository;
 
 @Service
@@ -12,14 +14,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User loginCheck(User user) throws Exception {
-        User dbUser=userRepository.findByUserId(user.getUserId());
+    public User loginCheck(User user)  {
+        User dbUser = userRepository.findByUserId(user.getUserId());
 
-        if(dbUser !=null && dbUser.getPwd().equals(user.getPwd())) {
-            return dbUser;
+        if (dbUser == null) {
+            throw new BasicException(ErrorCode.NOTFOUND_ID);
         }
 
-        throw new Exception("로그인 에러");
+        if (!dbUser.getPwd().equals(user.getPwd())) {
+            throw new BasicException(ErrorCode.WRONG_PASS);
+        }
+        return dbUser;
     }
 }
 

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import web.mvc.domain.FreeBoard;
+import web.mvc.exception.BasicException;
+import web.mvc.exception.ErrorCode;
 import web.mvc.repository.FreeBoardRepository;
 
 import java.util.List;
@@ -44,7 +46,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
             }
             return freeBoard;
         }
-        return null;
+        throw new BasicException(ErrorCode.FAILED_DETAIL);
     }
 
     @Override
@@ -54,6 +56,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     @Override
     public void delete(Long bno, String password) {
+        FreeBoard board=boardRepository.findById(bno).
+                orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
+        if(!board.getPassword().equals(password)){
+            throw new BasicException(ErrorCode.FAILED_DETAIL);
+        }
+
         boardRepository.deleteById(bno);
     }
 }

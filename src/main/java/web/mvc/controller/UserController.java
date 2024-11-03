@@ -27,24 +27,18 @@ public class UserController {
 
     @PostMapping("/user/loginCheck")
     public String login(HttpServletRequest request, HttpServletResponse response) {
-        String userId=request.getParameter("userId");
-        String pwd=request.getParameter("pwd");
+        String userId = request.getParameter("userId");
+        String pwd = request.getParameter("pwd");
 
         User user = new User(userId, pwd, null);
 
-        try{
-            User dbUser=userService.loginCheck(user);
-            if(dbUser!=null) {
-                HttpSession session=request.getSession();
-                session.setAttribute("loginUser", dbUser);
-                return "redirect:/"; // 로그인 성공하면 메인페이지로 리다이렉트
-            }
+        User dbUser = userService.loginCheck(user);
+        if(dbUser != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", dbUser);
+            return "redirect:/";
         }
-        catch(Exception e)
-        {
-            request.setAttribute("errMessage", e.getMessage());
-            return "/error/errorView";
-        }
+
 
         return "redirect:/user/login";
     }

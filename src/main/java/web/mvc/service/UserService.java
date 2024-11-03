@@ -6,5 +6,5 @@ public interface UserService{
 	/**
 	 * �로그인하기
 	 * */
-   User loginCheck(User user) throws Exception;
+   User loginCheck(User user) ;
 }

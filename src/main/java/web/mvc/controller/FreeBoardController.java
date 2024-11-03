@@ -53,7 +53,6 @@ public class FreeBoardController {
     }
 
 
-
     @PostMapping("/board/update")
     public String update(@ModelAttribute FreeBoard board)
     {
