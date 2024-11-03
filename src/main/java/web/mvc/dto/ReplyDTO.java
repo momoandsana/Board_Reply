@@ -1,14 +1,11 @@
 package web.mvc.dto;
 
-import java.time.LocalDateTime;
-
-import com.querydsl.core.annotations.QueryProjection;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Setter
