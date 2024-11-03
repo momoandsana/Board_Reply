@@ -104,12 +104,11 @@
     </form>
 </table>
 <h3> Reply INFO </h3>
-<%--  <c:forEach items="${board.repliesList}" var="reply" varStatus="state">
+<c:forEach items="${board.repliesList}" var="reply" varStatus="state">
     ${state.count}순서 / ${reply.rno} = ${reply.content}  / ${reply.insertDate}
-      <a href="${pageContext.request.contextPath}/reply/delete/${reply.rno}/${board.bno}">삭제</a> 
+      <a href="${pageContext.request.contextPath}/reply/delete/${reply.rno}/${board.bno}">삭제</a>
   <p>
-</c:forEach>   --%>
-
+</c:forEach>
 <hr>
 <div align=right><span style="font-size:9pt;">&lt;<a href="${pageContext.request.contextPath}/board/list">리스트로 돌아가기</a>&gt;</span></div>
 

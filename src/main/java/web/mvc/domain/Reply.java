@@ -23,7 +23,7 @@ public class Reply {
 	@CreationTimestamp
 	private LocalDateTime insertDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY) //지연로딩!!
+	@ManyToOne(fetch = FetchType.EAGER) //지연로딩!!
 	@JoinColumn(name = "free_bno")
 	private FreeBoard freeBoard;
 	
