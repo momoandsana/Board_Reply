@@ -4,10 +4,7 @@ package web.mvc.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
@@ -15,6 +12,7 @@ import lombok.Setter;
 @Table(name = "users") //테이블이름 변경
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 	@Id //pk
    private String userId;
