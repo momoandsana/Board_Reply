@@ -31,3 +31,6 @@ public class ReplyDTO {
 		);
 	}
 }
+/*
+ReplyDTO 와 FreeBoardDTO 가 순환참조하지 않기 위해서는 from 함수에서 서로 객체를 참조하지 말고 bno 같이 특정 부분만 참조해야 한다
+ */
