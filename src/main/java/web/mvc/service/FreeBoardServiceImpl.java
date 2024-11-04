@@ -49,9 +49,31 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         throw new BasicException(ErrorCode.FAILED_DETAIL);
     }
 
+//    @Override
+//    public FreeBoard update(FreeBoard board) {
+//        return boardRepository.save(board);// save 가 업데이트도 한다
+//    }
     @Override
     public FreeBoard update(FreeBoard board) {
-        return boardRepository.save(board);// save 가 업데이트도 한다
+        FreeBoard existingBoard=boardRepository.findById(board.getBno()).
+                orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
+
+        if(board.getSubject()!=null)
+        {
+            existingBoard.setSubject(board.getSubject());
+        }
+        if (board.getContent() != null) {
+            existingBoard.setContent(board.getContent());
+        }
+        if (board.getWriter() != null) {
+            existingBoard.setWriter(board.getWriter());
+        }
+        if (board.getPassword() != null) {
+            existingBoard.setPassword(board.getPassword());
+        }
+
+        return boardRepository.save(existingBoard);
+
     }
 
     @Override
