@@ -59,10 +59,7 @@ public class FreeBoardController {
         log.info("board update 도착");
         boardService.update(board);
         return "redirect:/board/read/"+board.getBno();
-    }// reply 기능 구현 후 다시 테스트
-    /*
-    2024-11-03T11:35:29.269+09:00  WARN 18804 --- [Board_Reply] [nio-9000-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
-     */
+    }
 
     @PostMapping("/board/delete")
     public String delete(Long bno,String password)

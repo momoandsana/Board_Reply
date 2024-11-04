@@ -42,7 +42,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
             if(state)
             {
                 freeBoard.setReadnum(freeBoard.getReadnum() + 1);
-                boardRepository.save(freeBoard);
+                boardRepository.save(freeBoard); // 업데이트도 save 함수 이용
             }
             return freeBoard;
         }

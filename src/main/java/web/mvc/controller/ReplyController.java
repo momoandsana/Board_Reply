@@ -38,3 +38,7 @@ public class ReplyController {
         return "redirect:/board/read/"+bno;// 댓글 삭제후 부모글 상세보기로 이동
     }
 }
+
+/*
+조회할 때는 포워딩, 나머지는 리다이렉트
+ */
