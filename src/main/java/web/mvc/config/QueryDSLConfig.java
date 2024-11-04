@@ -23,8 +23,6 @@ public class QueryDSLConfig {
         log.info("getQueryFactory call..");
         log.info("enetityManager = {}",entityManager);
 
-
-
         return new JPAQueryFactory(entityManager);
     }
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import web.mvc.domain.Reply;
 
 import java.time.LocalDateTime;
 
@@ -11,19 +12,22 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Getter
-//@AllArgsConstructor
-public class ReplyDTO   {
-    private Long rno;//댓글번호
-	private String content;//댓글내용
+public class ReplyDTO {
+	private Long rno;
+	private String content;
 	private LocalDateTime insertDate;
-	
-	
+
 	public ReplyDTO(Long rno, String content, LocalDateTime insertDate) {
-		super();
 		this.rno = rno;
 		this.content = content;
 		this.insertDate = insertDate;
 	}
-	
 
+	public static ReplyDTO from(Reply reply) {
+		return new ReplyDTO(
+				reply.getRno(),
+				reply.getContent(),
+				reply.getInsertDate()
+		);
+	}
 }

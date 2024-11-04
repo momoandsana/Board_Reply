@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import web.mvc.domain.FreeBoard;
+import web.mvc.dto.FreeBoardDTO;
 import web.mvc.exception.BasicException;
 import web.mvc.exception.ErrorCode;
 import web.mvc.repository.FreeBoardRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,68 +21,64 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     private final FreeBoardRepository boardRepository;
 
     @Override
-    public List<FreeBoard> selectAll() {
-        return boardRepository.findAll();
+    public List<FreeBoardDTO> selectAll() {
+        return boardRepository.findAll().stream()
+                .map(FreeBoardDTO::from)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<FreeBoard> selectAll(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<FreeBoardDTO> selectAll(Pageable pageable) {
+        return boardRepository.findAll(pageable)
+                .map(FreeBoardDTO::from);
     }
 
     @Override
-    public void insert(FreeBoard board) {
+    public void insert(FreeBoardDTO boardDTO) {
+        FreeBoard board = FreeBoard.from(boardDTO);
         boardRepository.save(board);
     }
 
     @Override
-    public FreeBoard selectBy(Long bno, boolean state) {
-        Optional<FreeBoard> optionalBoard = boardRepository.findById(bno);
-        if(optionalBoard.isPresent())
-        {
-            FreeBoard freeBoard = optionalBoard.get();
-            if(state)
-            {
-                freeBoard.setReadnum(freeBoard.getReadnum() + 1);
-                boardRepository.save(freeBoard); // 업데이트도 save 함수 이용
-            }
-            return freeBoard;
+    public FreeBoardDTO selectBy(Long bno, boolean state) {
+        FreeBoard freeBoard = boardRepository.findById(bno)
+                .orElseThrow(() -> new BasicException(ErrorCode.FAILED_DETAIL));
+
+        if (state) {
+            freeBoard.setReadnum(freeBoard.getReadnum() + 1);
+            boardRepository.save(freeBoard);
         }
-        throw new BasicException(ErrorCode.FAILED_DETAIL);
+
+        return FreeBoardDTO.from(freeBoard);
     }
 
-//    @Override
-//    public FreeBoard update(FreeBoard board) {
-//        return boardRepository.save(board);// save 가 업데이트도 한다
-//    }
     @Override
-    public FreeBoard update(FreeBoard board) {
-        FreeBoard existingBoard=boardRepository.findById(board.getBno()).
-                orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
+    public FreeBoardDTO update(FreeBoardDTO boardDTO) {
+        FreeBoard existingBoard = boardRepository.findById(boardDTO.getBno())
+                .orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
 
-        if(board.getSubject()!=null)
-        {
-            existingBoard.setSubject(board.getSubject());
+        if (boardDTO.getSubject() != null) {
+            existingBoard.setSubject(boardDTO.getSubject());
         }
-        if (board.getContent() != null) {
-            existingBoard.setContent(board.getContent());
+        if (boardDTO.getContent() != null) {
+            existingBoard.setContent(boardDTO.getContent());
         }
-        if (board.getWriter() != null) {
-            existingBoard.setWriter(board.getWriter());
+        if (boardDTO.getWriter() != null) {
+            existingBoard.setWriter(boardDTO.getWriter());
         }
-        if (board.getPassword() != null) {
-            existingBoard.setPassword(board.getPassword());
+        if (boardDTO.getPassword() != null) {
+            existingBoard.setPassword(boardDTO.getPassword());
         }
 
-        return boardRepository.save(existingBoard);
-
+        FreeBoard updatedBoard = boardRepository.save(existingBoard);
+        return FreeBoardDTO.from(updatedBoard);
     }
 
     @Override
     public void delete(Long bno, String password) {
-        FreeBoard board=boardRepository.findById(bno).
-                orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
-        if(!board.getPassword().equals(password)){
+        FreeBoard board = boardRepository.findById(bno)
+                .orElseThrow(() -> new BasicException(ErrorCode.NOTFOUND_ID));
+        if (!board.getPassword().equals(password)) {
             throw new BasicException(ErrorCode.FAILED_DETAIL);
         }
 

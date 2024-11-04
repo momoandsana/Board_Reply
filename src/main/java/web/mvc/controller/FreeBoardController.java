@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.mvc.domain.FreeBoard;
+import web.mvc.dto.FreeBoardDTO;
 import web.mvc.service.FreeBoardService;
 
 import java.util.List;
@@ -19,57 +19,46 @@ public class FreeBoardController {
 
     @GetMapping("/board/list")
     public String list(Model model) {
-        List<FreeBoard> freeList=boardService.selectAll();
-        model.addAttribute("freeList",freeList);
+        List<FreeBoardDTO> freeList = boardService.selectAll();
+        model.addAttribute("freeList", freeList);
         return "board/list";
     }
 
     @GetMapping("/board/{url}")
-    public String moveToPage(@PathVariable("url") String url)
-    {
-        return "board/"+url;
+    public String moveToPage(@PathVariable("url") String url) {
+        return "board/" + url;
     }
 
     @PostMapping("/board/insert")
-    public String insert(@ModelAttribute FreeBoard board)
-    {
-        boardService.insert(board);
+    public String insert(@ModelAttribute FreeBoardDTO boardDTO) {
+        boardService.insert(boardDTO);
         return "redirect:/board/list";
     }
 
     @GetMapping("/board/read/{bno}")
-    public String read(@PathVariable Long bno,Model model){
-        FreeBoard board=boardService.selectBy(bno,true);
-        model.addAttribute("board",board);
+    public String read(@PathVariable Long bno, Model model) {
+        FreeBoardDTO board = boardService.selectBy(bno, true);
+        model.addAttribute("board", board);
         return "board/read";
     }
 
     @PostMapping("/board/updateForm")
-    public String updateForm(@RequestParam("bno") Long bno, Model model)
-    {
-        FreeBoard board=boardService.selectBy(bno,false);
-        model.addAttribute("board",board);
+    public String updateForm(@RequestParam("bno") Long bno, Model model) {
+        FreeBoardDTO board = boardService.selectBy(bno, false);
+        model.addAttribute("board", board);
         return "board/update";
     }
 
-
     @PostMapping("/board/update")
-    public String update(@ModelAttribute FreeBoard board)
-    {
+    public String update(@ModelAttribute FreeBoardDTO boardDTO) {
         log.info("board update 도착");
-        boardService.update(board);
-        return "redirect:/board/read/"+board.getBno();
+        boardService.update(boardDTO);
+        return "redirect:/board/read/" + boardDTO.getBno();
     }
 
     @PostMapping("/board/delete")
-    public String delete(Long bno,String password)
-    {
-        boardService.delete(bno,password);
+    public String delete(Long bno, String password) {
+        boardService.delete(bno, password);
         return "redirect:/board/list";
     }
-
-
-
-
-
 }
