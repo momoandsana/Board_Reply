@@ -35,23 +35,30 @@ public class UserController {
         User user = new User(userId, pwd, null);
 
         User dbUser = userService.loginCheck(user);
-        if(dbUser != null) {
+
+        if (dbUser != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", dbUser);
             return "redirect:/";
+             /*
+             다시 post 요청하지 않도록
+            로그인을 하고 나서 리다이렉트해서 get 요청으로 바꿔줘야 함
+            새로고침하고 넣었던 데이터가 또 들어가지 않도록
+            특히 insert 상황에서
+            그래서 forward 방식 사용x
+            */
+
         }
 
-
         return "redirect:/user/login";
+
     }
 
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request)
-    {
-        HttpSession session=request.getSession();
-        if(session!=null)
-        {
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session != null) {
             session.invalidate();
         }
         return "redirect:/";// 로그웃하면 메인피에지로

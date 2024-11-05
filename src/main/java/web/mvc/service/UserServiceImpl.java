@@ -15,13 +15,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User loginCheck(User user)  {
-        User dbUser = userRepository.findByUserId(user.getUserId());
 
-        if (dbUser == null) {
-            throw new BasicException(ErrorCode.NOTFOUND_ID);
-        }
+        // findUserId 는 Optional<User> 로 반환해야 한다
+        User dbUser = userRepository
+                .findByUserId(user.getUserId())
+                .orElseThrow(()->new BasicException(ErrorCode.NOTFOUND_ID));
 
-        if (!dbUser.getPwd().equals(user.getPwd())) {
+//        if (dbUser == null) {// 아이디가 없는 경우
+//            throw new BasicException(ErrorCode.NOTFOUND_ID);
+//        }
+
+        if (!dbUser.getPwd().equals(user.getPwd())) {// 비밀번호가 틀린 경우
             throw new BasicException(ErrorCode.WRONG_PASS);
         }
         return dbUser;
