@@ -2,13 +2,17 @@ package web.mvc.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import web.mvc.domain.FreeBoard;
 import web.mvc.dto.FreeBoardDTO;
 import web.mvc.service.FreeBoardService;
-
-import java.util.List;
+import web.mvc.service.FreeBoardServiceImpl;
 
 @Controller
 @Slf4j
@@ -20,12 +24,24 @@ public class FreeBoardController {
     private final static int BLOCK_COUNT=4;
 
     private final FreeBoardService boardService;
+    private final FreeBoardServiceImpl freeBoardServiceImpl;
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model,@RequestParam(defaultValue = "1")int nowPage) {
 
-        List<FreeBoardDTO> freeList = boardService.selectAll();
-        model.addAttribute("freeList", freeList);
+        Pageable pageable=PageRequest.of((nowPage-1),PAGE_COUNT, Sort.Direction.DESC,"bno");
+        Page<FreeBoard> pageList = freeBoardServiceImpl.selectAll(pageable);
+        model.addAttribute("pageList", pageList);// 페이징 처리 정보 + data
+
+        int temp=(nowPage-1)%BLOCK_COUNT;
+        int startPage=nowPage-temp;
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("blockCount", BLOCK_COUNT);
+        model.addAttribute("nowPage", nowPage);
+
+//        List<FreeBoardDTO> freeList = boardService.selectAll();
+//        model.addAttribute("freeList", freeList);
         return "board/list";
     }
 

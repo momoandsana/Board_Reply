@@ -147,7 +147,7 @@ th, td{text-align: center}
 
 
 <%-- ${pageList.hasPrevious()}  /  ${pageList.hasNext()} --%>
-<%--
+
 <div style="text-align: center">
 		<!--  블럭당  -->
  <nav class="pagination-container">
@@ -180,7 +180,7 @@ th, td{text-align: center}
 	</nav>
 </div>
 
- --%>
+
 <div align=right>
 <span style="font-size:9pt;">&lt;<a href="${pageContext.request.contextPath}/board/write">글쓰기</a>&gt;</span>
 </div>

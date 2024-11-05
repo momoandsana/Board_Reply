@@ -11,8 +11,6 @@ import web.mvc.exception.ErrorCode;
 import web.mvc.repository.FreeBoardRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,17 +18,27 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     private final FreeBoardRepository boardRepository;
 
-    @Override
-    public List<FreeBoardDTO> selectAll() {
-        return boardRepository.findAll().stream()
-                .map(FreeBoardDTO::from)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<FreeBoardDTO> selectAll() {
+//        return boardRepository.findAll().stream()
+//                .map(FreeBoardDTO::from)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
-    public Page<FreeBoardDTO> selectAll(Pageable pageable) {
-        return boardRepository.findAll(pageable)
-                .map(FreeBoardDTO::from);
+    public List<FreeBoard> selectAll() {
+        return boardRepository.findAll();
+    }
+
+//    @Override
+//    public Page<FreeBoardDTO> selectAll(Pageable pageable) {
+//        return boardRepository.findAll(pageable)
+//                .map(FreeBoardDTO::from);
+//    }
+
+    @Override
+    public Page<FreeBoard> selectAll(Pageable pageable) {
+        return boardRepository.findAll(pageable);
     }
 
     @Override

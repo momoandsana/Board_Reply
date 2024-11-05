@@ -2,6 +2,7 @@ package web.mvc.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import web.mvc.domain.FreeBoard;
 import web.mvc.dto.FreeBoardDTO;
 
 import java.util.List;
@@ -11,12 +12,15 @@ public interface FreeBoardService {
 	/**
 	 * 전체검색
 	 * */
-	List<FreeBoardDTO> selectAll();
+	//List<FreeBoardDTO> selectAll();
+	List<FreeBoard> selectAll();
+
 
 	/**
 	 * 전체검색 - Page처리
 	 * */
-	Page<FreeBoardDTO> selectAll(Pageable pageable);
+	//Page<FreeBoardDTO> selectAll(Pageable pageable);
+	Page<FreeBoard> selectAll(Pageable pageable);
 
 	/**
 	 * 등록
