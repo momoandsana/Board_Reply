@@ -8,24 +8,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import web.mvc.domain.User;
 import web.mvc.service.UserService;
 
 @Controller
 @Slf4j
 @AllArgsConstructor
+@RequestMapping("/user")
 public class UserController {
     /*
     세션 관리는 컨트롤러에서
      */
     private final UserService userService;
 
-    @GetMapping("/user/login")
+    @GetMapping("/login")
     public String user() {
         return "user/login";
     }
 
-    @PostMapping("/user/loginCheck")
+    @PostMapping("/loginCheck")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         String userId = request.getParameter("userId");
         String pwd = request.getParameter("pwd");
@@ -44,7 +46,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request)
     {
         HttpSession session=request.getSession();
