@@ -22,6 +22,11 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard,Long>
     @Query(value = "select distinct f from FreeBoard f  left join fetch f.repliesList",
             countQuery = "select count(distinct f.bno) from FreeBoard f left join f.repliesList" )
      Page<FreeBoard> join04(Pageable page);
+    /*
+    이거 써야지 n+1 문제가 없음,
+    return boardRepository.findAll(pageable).map(board -> modelMapper.map(board, FreeBoardDTO.class));
+    이거는 N+1 문제가 있음
+     */
 
 
 }
