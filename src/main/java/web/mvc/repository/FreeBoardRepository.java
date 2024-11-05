@@ -23,6 +23,7 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard,Long>
             countQuery = "select count(distinct f.bno) from FreeBoard f left join f.repliesList" )
      Page<FreeBoard> join04(Pageable page);
 
+
 }
 /*
 FreeBoard 필드에 기반해서 기본 함수들이 만들어진다

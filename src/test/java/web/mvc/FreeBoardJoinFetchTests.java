@@ -4,10 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 import web.mvc.domain.FreeBoard;
 import web.mvc.domain.QFreeBoard;
@@ -125,7 +122,7 @@ public class FreeBoardJoinFetchTests {
     }
 
     /**
-     * QueryDSL를 이용한 join fetch
+     * QueryDSL를 이용한 join fetch->n+1 문제해결
      * */
     @Test
     public void queryDSL01(){
@@ -154,52 +151,52 @@ public class FreeBoardJoinFetchTests {
     /**
      * QueryDSL를 이용한 join fetch + 페이징처리
      * */
-//    @Test
-//    public void queryDSL02() {
-//        QFreeBoard freeBoard = QFreeBoard.freeBoard;
-//        Pageable pageable = PageRequest.of(1,5 , Sort.Direction.DESC , "bno");
-//        // Count query
-//        long totalCount = jpaFactory
-//                // .select(freeBoard.countDistinct())
-//                .from(freeBoard)
-//                .leftJoin(freeBoard.repliesList) // left join
-//                .fetchCount(); // Count distinct bno
-//
-//        // Data query
-//        List<FreeBoard> content = jpaFactory
-//                .selectFrom(freeBoard)
-//                // .distinct()
-//                .leftJoin(freeBoard.repliesList) // left join fetch
-//                .fetchJoin() // fetch join
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetch();
-//
-//        Page<FreeBoard> page= new PageImpl<>(content, pageable, totalCount);
-//        System.out.println("***************************");
-//        System.out.println("page.getNumber() = "+page.getNumber());
-//        System.out.println("page.getSize() = "+page.getSize());
-//        System.out.println("page.getTotalPages() = "+page.getTotalPages());
-//        System.out.println("page.previousPageable() = "+page.previousPageable());
-//        System.out.println("page.nextPageable() = "+page.nextPageable());
-//
-//        System.out.println("page.isFirst() = "+page.isFirst());
-//        System.out.println("page.isLast() = "+page.isLast());
-//
-//        System.out.println("page.hasPrevious() = "+page.hasPrevious());
-//        System.out.println("page.hasNext() = "+page.hasNext());
-//        System.out.println("*****************************************");
-//
-//        System.out.println("list.size = " + page.getContent().size());
-//        //list.forEach(b->System.out.println(b.getBno() +" = " + b.getReplyList().size()));
-//
-//        page.getContent().forEach(b->{
-//            System.out.println(b.getBno()+" | " + b.getSubject());
-//            b.getRepliesList().forEach(r->{
-//                System.out.println("====> " +r.getRno()+" | " +r.getContent()+" | "+ r.getRno());
-//            });
-//            System.out.println();
-//        });
-//    }
+    @Test
+    public void queryDSL02() {
+        QFreeBoard freeBoard = QFreeBoard.freeBoard;
+        Pageable pageable = PageRequest.of(1,5 , Sort.Direction.DESC , "bno");
+        // Count query
+        long totalCount = jpaFactory
+                // .select(freeBoard.countDistinct())
+                .from(freeBoard)
+                .leftJoin(freeBoard.repliesList) // left join
+                .fetchCount(); // Count distinct bno
+
+        // Data query
+        List<FreeBoard> content = jpaFactory
+                .selectFrom(freeBoard)
+                // .distinct()
+                .leftJoin(freeBoard.repliesList) // left join fetch
+                .fetchJoin() // fetch join
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Page<FreeBoard> page= new PageImpl<>(content, pageable, totalCount);
+        System.out.println("***************************");
+        System.out.println("page.getNumber() = "+page.getNumber());
+        System.out.println("page.getSize() = "+page.getSize());
+        System.out.println("page.getTotalPages() = "+page.getTotalPages());
+        System.out.println("page.previousPageable() = "+page.previousPageable());
+        System.out.println("page.nextPageable() = "+page.nextPageable());
+
+        System.out.println("page.isFirst() = "+page.isFirst());
+        System.out.println("page.isLast() = "+page.isLast());
+
+        System.out.println("page.hasPrevious() = "+page.hasPrevious());
+        System.out.println("page.hasNext() = "+page.hasNext());
+        System.out.println("*****************************************");
+
+        System.out.println("list.size = " + page.getContent().size());
+        //list.forEach(b->System.out.println(b.getBno() +" = " + b.getReplyList().size()));
+
+        page.getContent().forEach(b->{
+            System.out.println(b.getBno()+" | " + b.getSubject());
+            b.getRepliesList().forEach(r->{
+                System.out.println("====> " +r.getRno()+" | " +r.getContent()+" | "+ r.getRno());
+            });
+            System.out.println();
+        });
+    }
 
 }

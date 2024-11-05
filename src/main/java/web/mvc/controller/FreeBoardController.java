@@ -16,10 +16,14 @@ import java.util.List;
 @RequestMapping("/board")
 public class FreeBoardController {
 
+    private final static int PAGE_COUNT=10;
+    private final static int BLOCK_COUNT=4;
+
     private final FreeBoardService boardService;
 
     @GetMapping("/list")
     public String list(Model model) {
+
         List<FreeBoardDTO> freeList = boardService.selectAll();
         model.addAttribute("freeList", freeList);
         return "board/list";
