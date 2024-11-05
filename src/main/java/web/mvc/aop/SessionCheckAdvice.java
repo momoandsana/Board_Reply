@@ -14,9 +14,10 @@ import web.mvc.exception.ErrorCode;
 @Component
 public class SessionCheckAdvice {
 
-    @Before("execution(* web.mvc.controller.*.*(..)) && " +
-            "!execution(* web.mvc.controller.UserController.*(..)) && " +
-            "!execution(* web.mvc.controller.HomeController.home(..))")
+//    @Before("execution(* web.mvc.controller.*.*(..)) && " +
+//            "!execution(* web.mvc.controller.UserController.*(..)) && " +
+//            "!execution(* web.mvc.controller.HomeController.home(..))")
+    @Before("execution(public * web.mvc.controller.FreeBoardController.*(..))")
     public void checkSession()  {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession(false);

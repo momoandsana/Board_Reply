@@ -56,7 +56,8 @@ public class ReplyController {
                          @PathVariable("bno") Long bno)
     {
         replyService.delete(rno);
-        return "redirect:/board/read/"+bno+"?state=false";// 댓글 삭제후 부모글 상세보기로 이동,조회수는 증가x
+        return "redirect:/board/read/"+bno+"?state=false";
+        // 댓글 삭제후 부모글 상세보기로 이동,조회수는 증가x
     }
 }
 
