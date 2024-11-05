@@ -1,9 +1,11 @@
 package web.mvc.service;
 
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.mvc.domain.FreeBoard;
 import web.mvc.dto.FreeBoardDTO;
 import web.mvc.exception.BasicException;
@@ -14,9 +16,11 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class FreeBoardServiceImpl implements FreeBoardService {
 
     private final FreeBoardRepository boardRepository;
+    private final ModelMapper modelMapper;
 
 //    @Override
 //    public List<FreeBoardDTO> selectAll() {
@@ -32,8 +36,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     @Override
     public Page<FreeBoardDTO> selectAll(Pageable pageable) {
-        return boardRepository.findAll(pageable)
-                .map(FreeBoardDTO::from);
+//        return boardRepository.findAll(pageable)
+//                .map(FreeBoardDTO::from);
+
+        return boardRepository.findAll(pageable).map(board -> modelMapper.map(board, FreeBoardDTO.class));
     }
 
 //    @Override
@@ -43,21 +49,33 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     @Override
     public void insert(FreeBoardDTO boardDTO) {
-        FreeBoard board = FreeBoard.from(boardDTO);
+        //FreeBoard board = FreeBoard.from(boardDTO);
+
+        FreeBoard board= modelMapper.map(boardDTO, FreeBoard.class);// appConfig 에 해당함수 만들기
         boardRepository.save(board);
     }
 
     @Override
-    public FreeBoardDTO selectBy(Long bno, boolean state) {
+    public FreeBoardDTO selectBy(Long bno, boolean state) {// 조회수가 늘어야 하는 순간이 있고 조회수가 늘지 않아야 하는 순간이 있다
         FreeBoard freeBoard = boardRepository.findById(bno)
                 .orElseThrow(() -> new BasicException(ErrorCode.FAILED_DETAIL));
 
         if (state) {
             freeBoard.setReadnum(freeBoard.getReadnum() + 1);
-            boardRepository.save(freeBoard);
+            /*
+            변경감지가 일어나서 save 할 필요가 없음
+
+             */
+            //boardRepository.save(freeBoard);
         }
 
-        return FreeBoardDTO.from(freeBoard);
+        FreeBoardDTO freeBoardDTO=modelMapper.map(freeBoard, FreeBoardDTO.class);
+        /*
+        엔티티를 dto 로 변환
+         */
+
+        //return FreeBoardDTO.from(freeBoard);
+        return freeBoardDTO;
     }
 
     @Override
@@ -79,7 +97,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         }
 
         FreeBoard updatedBoard = boardRepository.save(existingBoard);
-        return FreeBoardDTO.from(updatedBoard);
+        FreeBoardDTO freeBoardDTO=modelMapper.map(updatedBoard, FreeBoardDTO.class);
+        return freeBoardDTO;
     }
 
     @Override

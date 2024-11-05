@@ -3,6 +3,7 @@ package web.mvc.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import web.mvc.dto.FreeBoardDTO;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
+@DynamicUpdate// 조회수만 set 으로 변경감지하면 update 문이 readnum 에 대해서만 올라감
 public class FreeBoard { //db에 free_board
 	@Id //pk
 	@GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "free_bno_seq")

@@ -2,6 +2,7 @@ package web.mvc.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +25,12 @@ public class FreeBoardController {
 
     private final FreeBoardService boardService;
     private final FreeBoardServiceImpl freeBoardServiceImpl;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/list")
     public String list(Model model,@RequestParam(defaultValue = "1")int nowPage) {
 
-        Pageable pageable=PageRequest.of((nowPage-1),PAGE_COUNT, Sort.Direction.DESC,"bno");
+        Pageable pageable=PageRequest.of((nowPage-1),PAGE_COUNT, Sort.Direction.ASC,"bno");
         Page<FreeBoardDTO> pageList = freeBoardServiceImpl.selectAll(pageable);
         model.addAttribute("pageList", pageList);// 페이징 처리 정보 + data
 
@@ -51,14 +53,18 @@ public class FreeBoardController {
 
     @PostMapping("/insert")
     public String insert(@ModelAttribute FreeBoardDTO boardDTO) {
+
+
         boardService.insert(boardDTO);
-        return "redirect:/board/list";
+
+
+        return "redirect:/board/list";// prg 방식. 등록을 하고 다시 리스트로 보냄. post redirect get
     }
 
     @GetMapping("/read/{bno}")
     public String read(@PathVariable Long bno, Model model) {
-        FreeBoardDTO board = boardService.selectBy(bno, true);
-        model.addAttribute("board", board);
+        FreeBoardDTO board = boardService.selectBy(bno, true);// state 로 조회수 증가
+        model.addAttribute("board", board); // 해당 글 번호에 해당하는 글을 가지고 옴
         return "board/read";
     }
 
