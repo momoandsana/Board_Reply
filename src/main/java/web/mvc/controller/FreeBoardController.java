@@ -82,3 +82,43 @@ public class FreeBoardController {
         return "redirect:/board/list";
     }
 }
+
+/*
+<페이징 처리 원리>
+
+페이지(Page): 데이터를 일정한 수량으로 나눈 단위입니다. 예를 들어, 한 페이지에 5개의 게시글을 표시하면, 총 20개의 게시글은 4개의 페이지로 나뉩니다.
+블록(Block): 페이지 링크를 그룹으로 묶는 단위입니다. 예를 들어, 한 블록에 4개의 페이지 링크를 표시하면, 총 20개의 페이지는 5개의 블록으로 나뉩니다.
+페이지당 항목 수(PAGE_COUNT): 한 페이지에 표시할 데이터의 수입니다.
+블록당 페이지 수(BLOCK_COUNT): 한 블록에 표시할 페이지 링크의 수입니다
+
+PAGE_COUNT: 한 페이지에 표시할 게시글 수 (여기서는 5개).
+BLOCK_COUNT: 한 블록에 표시할 페이지 링크 수 (여기서는 4개).
+nowPage: 현재 사용자가 보고 있는 페이지 번호 (기본값은 1).
+페이징 로직 설명
+Pageable 객체 생성:
+
+PageRequest.of(page, size, sort) 메서드를 사용하여 Pageable 객체를 생성합니다.
+page: 0부터 시작하는 페이지 번호. nowPage - 1로 설정하여 사용자가 보는 페이지 번호(1부터 시작)를 Pageable에 맞게 변환합니다.
+size: 한 페이지에 표시할 게시글 수 (PAGE_COUNT).
+sort: 정렬 기준 (Sort.Direction.DESC, "bno").
+Page<FreeBoard> 가져오기:
+
+freeBoardServiceImpl.selectAll(pageable)을 호출하여 페이징된 데이터를 가져옵니다.
+결과는 Page<FreeBoard> 타입으로, 현재 페이지의 데이터와 페이징 정보가 포함됩니다.
+블록의 시작 페이지 계산:
+
+temp = (nowPage - 1) % BLOCK_COUNT는 현재 페이지가 속한 블록 내에서의 위치를 계산합니다.
+startPage = nowPage - temp는 현재 페이지가 속한 블록의 시작 페이지 번호를 계산합니다.
+예를 들어:
+
+nowPage = 7, BLOCK_COUNT = 4일 때:
+temp = (7 - 1) % 4 = 6 % 4 = 2
+startPage = 7 - 2 = 5
+즉, 페이지 5부터 8까지가 한 블록이 됩니다.
+모델에 변수 추가:
+
+pageList: 페이징된 데이터 및 페이징 정보.
+startPage: 현재 블록의 시작 페이지 번호.
+blockCount: 한 블록에 표시할 페이지 링크 수.
+nowPage: 현재 페이지 번호.
+ */
