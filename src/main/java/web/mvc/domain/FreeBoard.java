@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
-import web.mvc.dto.FreeBoardDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 @Builder
 @ToString
 @DynamicUpdate// 조회수만 set 으로 변경감지하면 update 문이 readnum 에 대해서만 올라감
-public class FreeBoard { //db에 free_board
+public class FreeBoard { //db에 free_board 로 들어감
 	@Id //pk
 	@GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "free_bno_seq")
 	@SequenceGenerator(name ="free_bno_seq" , allocationSize = 1 , sequenceName = "free_bno_seq")
@@ -46,19 +45,19 @@ public class FreeBoard { //db에 free_board
 	}
 
 	// FreeBoardDTO를 FreeBoard 엔티티로 변환하는 from 정적 메서드
-	public static FreeBoard from(FreeBoardDTO dto) {
-		FreeBoard freeBoard = FreeBoard.builder()
-				.bno(dto.getBno())
-				.subject(dto.getSubject())
-				.writer(dto.getWriter())
-				.content(dto.getContent())
-				.password(dto.getPassword())
-				.readnum(dto.getReadnum())
-				.insertDate(dto.getInsertDate())
-				.build();
-		// 필요 시 repliesList 변환 추가 가능
-		return freeBoard;
-	}
+//	public static FreeBoard from(FreeBoardDTO dto) {
+//		FreeBoard freeBoard = FreeBoard.builder()
+//				.bno(dto.getBno())
+//				.subject(dto.getSubject())
+//				.writer(dto.getWriter())
+//				.content(dto.getContent())
+//				.password(dto.getPassword())
+//				.readnum(dto.getReadnum())
+//				.insertDate(dto.getInsertDate())
+//				.build();
+//		// 필요 시 repliesList 변환 추가 가능
+//		return freeBoard;
+//	}
 }
 /*
 디비에서는 댓글을 검색하면 부모글의 정보를 검색하고 싶다

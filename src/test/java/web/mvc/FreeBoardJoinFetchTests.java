@@ -152,7 +152,7 @@ public class FreeBoardJoinFetchTests {
      * QueryDSL를 이용한 join fetch + 페이징처리
      * */
     @Test
-    public void queryDSL02() {
+    public void queryDSL02() {// join04 나 이거 쿼리 이용하기 findAll() 문제 해결 안 된다
         QFreeBoard freeBoard = QFreeBoard.freeBoard;
         Pageable pageable = PageRequest.of(1,5 , Sort.Direction.DESC , "bno");
         // Count query

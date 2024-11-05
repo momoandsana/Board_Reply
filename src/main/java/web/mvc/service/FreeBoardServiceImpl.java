@@ -39,7 +39,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 //        return boardRepository.findAll(pageable)
 //                .map(FreeBoardDTO::from);
 
-        return boardRepository.findAll(pageable).map(board -> modelMapper.map(board, FreeBoardDTO.class));
+        return boardRepository.findAll(pageable).map(board -> modelMapper.map(board, FreeBoardDTO.class));//n+1 문제있음
     }
 
 //    @Override
