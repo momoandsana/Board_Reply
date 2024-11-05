@@ -36,6 +36,7 @@ public class FreeBoard { //db에 free_board
 	private LocalDateTime updateDate; //수정
 
 	@OneToMany(mappedBy = "freeBoard" , cascade = CascadeType.ALL)
+	// 양방향 관계, Reply 엔티티의 freeBoard 변수 이름 사용해서 매핑
 	private List<Reply> repliesList;//  지연로딩
 
 	public FreeBoard(Long bno) {
@@ -57,3 +58,19 @@ public class FreeBoard { //db에 free_board
 		return freeBoard;
 	}
 }
+/*
+디비에서는 댓글을 검색하면 부모글의 정보를 검색하고 싶다
+select * from board join reply on
+
+게시물을 검색하면 게시물에 달린 댓글을 검색하고 싶다
+select * from board join reply on
+
+java 에서
+
+public Reply1(){
+댓글중심일 때
+
+public Board2(){
+게시글 중심일 때->Board 는 mappedBy 가 없으면 reply 에 대한 정보가 없음
+
+ */

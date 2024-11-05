@@ -24,8 +24,8 @@ public class Reply {
 	@CreationTimestamp
 	private LocalDateTime insertDate;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "free_bno")// fk 를 지정
+	@ManyToOne(fetch = FetchType.LAZY)// default 는 eager 다대일이니까
+	@JoinColumn(name = "free_bno")// fk 를 지정, 원래는 freeBoard 로 fk로 잡히는데 수정함
 	private FreeBoard freeBoard;
 
 	// ReplyDTO를 Reply 엔티티로 변환하는 정적 메서드

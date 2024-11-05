@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "users") //테이블이름 변경
+@Table(name = "users") //테이블이름 변경, 오라클에서 user 는 예약어임
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
