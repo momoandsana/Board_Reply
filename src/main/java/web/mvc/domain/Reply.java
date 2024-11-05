@@ -25,7 +25,7 @@ public class Reply {
 	private LocalDateTime insertDate;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "free_bno")
+	@JoinColumn(name = "free_bno")// fk 를 지정
 	private FreeBoard freeBoard;
 
 	// ReplyDTO를 Reply 엔티티로 변환하는 정적 메서드

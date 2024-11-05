@@ -21,6 +21,9 @@ class BoardReplyApplicationTests {
     void contextLoads() {
     }
 
+    /*
+    진짜 테스트 코드는 아니고 데이터 삽입용
+     */
     @Test
     @Rollback(false)
     public void userInsert(){
