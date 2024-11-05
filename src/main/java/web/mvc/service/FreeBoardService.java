@@ -19,8 +19,10 @@ public interface FreeBoardService {
 	/**
 	 * 전체검색 - Page처리
 	 * */
-	//Page<FreeBoardDTO> selectAll(Pageable pageable);
-	Page<FreeBoard> selectAll(Pageable pageable);
+
+
+	Page<FreeBoardDTO> selectAll(Pageable pageable);
+	//Page<FreeBoard> selectAll(Pageable pageable);
 
 	/**
 	 * 등록

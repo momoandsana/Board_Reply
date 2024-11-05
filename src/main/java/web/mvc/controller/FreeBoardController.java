@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.mvc.domain.FreeBoard;
 import web.mvc.dto.FreeBoardDTO;
 import web.mvc.service.FreeBoardService;
 import web.mvc.service.FreeBoardServiceImpl;
@@ -30,7 +29,7 @@ public class FreeBoardController {
     public String list(Model model,@RequestParam(defaultValue = "1")int nowPage) {
 
         Pageable pageable=PageRequest.of((nowPage-1),PAGE_COUNT, Sort.Direction.DESC,"bno");
-        Page<FreeBoard> pageList = freeBoardServiceImpl.selectAll(pageable);
+        Page<FreeBoardDTO> pageList = freeBoardServiceImpl.selectAll(pageable);
         model.addAttribute("pageList", pageList);// 페이징 처리 정보 + data
 
         int temp=(nowPage-1)%BLOCK_COUNT;

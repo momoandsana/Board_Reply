@@ -30,16 +30,16 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         return boardRepository.findAll();
     }
 
-//    @Override
-//    public Page<FreeBoardDTO> selectAll(Pageable pageable) {
-//        return boardRepository.findAll(pageable)
-//                .map(FreeBoardDTO::from);
-//    }
-
     @Override
-    public Page<FreeBoard> selectAll(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<FreeBoardDTO> selectAll(Pageable pageable) {
+        return boardRepository.findAll(pageable)
+                .map(FreeBoardDTO::from);
     }
+
+//    @Override
+//    public Page<FreeBoard> selectAll(Pageable pageable) {
+//        return boardRepository.findAll(pageable);
+//    }
 
     @Override
     public void insert(FreeBoardDTO boardDTO) {
