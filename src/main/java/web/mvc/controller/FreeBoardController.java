@@ -54,23 +54,22 @@ public class FreeBoardController {
     @PostMapping("/insert")
     public String insert(@ModelAttribute FreeBoardDTO boardDTO) {
 
-
         boardService.insert(boardDTO);
-
 
         return "redirect:/board/list";// prg 방식. 등록을 하고 다시 리스트로 보냄. post redirect get
     }
 
     @GetMapping("/read/{bno}")
-    public String read(@PathVariable Long bno, Model model) {
-        FreeBoardDTO board = boardService.selectBy(bno, true);// state 로 조회수 증가
+    public String read(@PathVariable Long bno, Model model,
+                       @RequestParam(required = false,defaultValue ="true") Boolean state) {
+        FreeBoardDTO board = boardService.selectBy(bno, state);// state 로 조회수 증가
         model.addAttribute("board", board); // 해당 글 번호에 해당하는 글을 가지고 옴
         return "board/read";
     }
 
     @PostMapping("/updateForm")
     public String updateForm(@RequestParam("bno") Long bno, Model model) {
-        FreeBoardDTO board = boardService.selectBy(bno, false);
+        FreeBoardDTO board = boardService.selectBy(bno, false);// 여기서는 조회수가 올라가지 않는다
         model.addAttribute("board", board);
         return "board/update";
     }
@@ -81,6 +80,9 @@ public class FreeBoardController {
         boardService.update(boardDTO);
         return "redirect:/board/read/" + boardDTO.getBno();
     }
+    /*
+    여러 번 수행해도 결과가 같은(prg)를 유지하기 위해 리다이렉션 사용
+     */
 
     @PostMapping("/delete")
     public String delete(Long bno, String password) {
@@ -91,6 +93,8 @@ public class FreeBoardController {
 
 /*
 <페이징 처리 원리>
+
+게시글 수=페이지*블록
 
 페이지(Page): 데이터를 일정한 수량으로 나눈 단위입니다. 예를 들어, 한 페이지에 5개의 게시글을 표시하면, 총 20개의 게시글은 4개의 페이지로 나뉩니다.
 블록(Block): 페이지 링크를 그룹으로 묶는 단위입니다. 예를 들어, 한 블록에 4개의 페이지 링크를 표시하면, 총 20개의 페이지는 5개의 블록으로 나뉩니다.
