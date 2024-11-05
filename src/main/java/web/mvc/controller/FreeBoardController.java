@@ -20,7 +20,7 @@ import web.mvc.service.FreeBoardServiceImpl;
 @RequestMapping("/board")
 public class FreeBoardController {
 
-    private final static int PAGE_COUNT=10;
+    private final static int PAGE_COUNT=5;
     private final static int BLOCK_COUNT=4;
 
     private final FreeBoardService boardService;

@@ -116,8 +116,8 @@ th, td{text-align: center}
     </tr>
     </c:when>
     <c:otherwise>
-    <c:forEach items="${requestScope.freeList}" var="board">
-	<%-- <c:forEach items="${requestScope.pageList.content}" var="board"> --%>
+<%--    <c:forEach items="${requestScope.freeList}" var="board">--%>
+	 <c:forEach items="${requestScope.pageList.content}" var="board">
 		    <tr>
 		        <td>
 		            ${board.bno}
@@ -147,7 +147,7 @@ th, td{text-align: center}
 
 
 <%-- ${pageList.hasPrevious()}  /  ${pageList.hasNext()} --%>
-<%--
+
 <div style="text-align: center">
 		<!--  블럭당  -->
  <nav class="pagination-container">
@@ -180,7 +180,6 @@ th, td{text-align: center}
 	</nav>
 </div>
 
- --%>
 <div align=right>
 <span style="font-size:9pt;">&lt;<a href="${pageContext.request.contextPath}/board/write">글쓰기</a>&gt;</span>
 </div>
